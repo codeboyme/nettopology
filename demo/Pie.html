@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>KineticJS实现的饼图</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/json2.js"></script>
+	<script type="text/javascript" src="../js/uuid.js"></script>
+	<script type="text/javascript" src="../js/kinetic-v3.10.4.js"></script>
+	<script type="text/javascript" src="../js/kinetic_pie.js"></script>
+	<script>
+		var pie=null;
+		$(function(){
+    		pie = new Kinetic.Pie({
+	            container: "container",
+			    width: 200,
+			    height: 200,
+			    backgroundImage:"../images/background.png",
+			    data:[
+			    	{title:'部分一',value:100},
+			    	{title:'部分二',value:200},
+			    	{title:'部分三',value:300},
+			    	{title:'部分四',value:400},
+			    	{title:'部分五',value:500},
+			    	{title:'部分六',value:600}
+			    ],
+			    onclick:showMessage,
+			    showLegend:true
+          	});
+    	});
+    	function showMessage(data)
+    	{
+    			alert(data.title+","+data.value+","+data.percent);
+    	}
+	</script>
+</head>
+<body>
+	<div id="container"></div>
+</body>
+</html>

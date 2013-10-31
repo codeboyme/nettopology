@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Border Layout - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../css/demo.css">
+	<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/json2.js"></script>
+	<script type="text/javascript" src="../js/uuid.js"></script>
+	<script type="text/javascript" src="../js/kinetic-v3.10.4.js"></script>
+	<script type="text/javascript" src="../js/kinetic_topology.js"></script>
+	<script>
+		var topology=null;
+		var jsonStr='{"devices":[{"id":"firewall_9C647579-0E6F-4069-8B67-9431AD470894","name":"防火墙 ","src":"../images/Firewall_02_128x128.png","x":988,"y":123,"width":100,"height":119},{"id":"certificate_63F13F2A-BF81-4D10-985D-F5CF68350D43","name":"证书-开 ","src":"../images/Certificate_128x128.png","x":311,"y":331,"width":104,"height":128},{"id":"email_41F0A70E-906B-422C-B13B-BB81BD6B217B","name":"邮件服务器 ","src":"../images/Email_128x128.png","x":111,"y":356,"width":125,"height":108},{"id":"wireless_Router_7B8279E3-F4D5-4D08-A919-6E8BBE4EF0A0","name":"无线路由器 ","src":"../images/Wireless_Router_128x128.png","x":486,"y":318,"width":123,"height":120},{"id":"router_E2AEA96B-7FB0-4A43-AF6B-9E643B6BB9F3","name":"路由器 ","src":"../images/Router_Icon_128x128.png","x":597,"y":157,"width":112,"height":70},{"id":"camera_EECDEDF6-A9A7-40FD-9E7F-5C9D498F719E","name":"摄像头 ","src":"../images/Ip_Camera_128x128.png","x":125,"y":34,"width":118,"height":128},{"id":"printServer_23547DDC-9D18-4E41-A1E0-B5C8A62D806E","name":"打印机服务器 ","src":"../images/Print_Server_128x128.png","x":121,"y":209,"width":127,"height":71},{"id":"modem_79AD9EA2-C64A-4E44-AF08-D82581EC51D3","name":"调制解调器 ","src":"../images/Modem_128x128.png","x":370,"y":113,"width":89,"height":127}],"lines":[{"srcDeviceId":"email_41F0A70E-906B-422C-B13B-BB81BD6B217B","dstDeviceId":"certificate_63F13F2A-BF81-4D10-985D-F5CF68350D43","stroke":"black","strokeWidth":1},{"srcDeviceId":"certificate_63F13F2A-BF81-4D10-985D-F5CF68350D43","dstDeviceId":"wireless_Router_7B8279E3-F4D5-4D08-A919-6E8BBE4EF0A0","stroke":"black","strokeWidth":1},{"srcDeviceId":"wireless_Router_7B8279E3-F4D5-4D08-A919-6E8BBE4EF0A0","dstDeviceId":"router_E2AEA96B-7FB0-4A43-AF6B-9E643B6BB9F3","stroke":"black","strokeWidth":1},{"srcDeviceId":"router_E2AEA96B-7FB0-4A43-AF6B-9E643B6BB9F3","dstDeviceId":"firewall_9C647579-0E6F-4069-8B67-9431AD470894","stroke":"black","strokeWidth":1},{"srcDeviceId":"camera_EECDEDF6-A9A7-40FD-9E7F-5C9D498F719E","dstDeviceId":"modem_79AD9EA2-C64A-4E44-AF08-D82581EC51D3","stroke":"black","strokeWidth":1},{"srcDeviceId":"printServer_23547DDC-9D18-4E41-A1E0-B5C8A62D806E","dstDeviceId":"modem_79AD9EA2-C64A-4E44-AF08-D82581EC51D3","stroke":"black","strokeWidth":1},{"srcDeviceId":"modem_79AD9EA2-C64A-4E44-AF08-D82581EC51D3","dstDeviceId":"router_E2AEA96B-7FB0-4A43-AF6B-9E643B6BB9F3","stroke":"black","strokeWidth":1}]}';
+		function saveJson()
+    	{
+    		jsonStr=topology.toJson();
+    		//$.messager.alert('保存的数据',jsonStr);  
+    	}
+    	function loadJson(){
+    		topology.load(jsonStr);
+    	}
+    	function resize()
+    	{
+		 	topology.fitSizeAuto();
+    	}
+		$(function(){
+    		topology = new Kinetic.Topology({
+	            container: "container",
+			    width: $("#mainArea").width()-$("#toolbar").width()-5,
+			    height: $("#mainArea").height()-5,
+			    backgroundImage:"../images/background.png",
+			    connectorImage:"../images/connector.png",
+			    toolbar:{
+			     	container:'toolbar',
+			     	data:[
+				    	{id:'router',name:'路由器',image:'../images/Router_Icon_128x128.png',width:32,height:32},
+				    	{id:'firewall',name:'防火墙',image:'../images/Firewall_02_128x128.png',width:32,height:32},
+				    	{id:'bridge',name:'网桥',image:'../images/Bridge_128x128.png',width:32,height:32},
+				    	{id:'certificate',name:'证书-开',image:'../images/Certificate_128x128.png',width:32,height:32},
+				    	{id:'certificate-off',name:'证书-关',image:'../images/Certificate_Off_128x128.png',width:32,height:32},
+				    	{id:'concentrator',name:'连接器',image:'../images/Concentrator_128x128.png',width:32,height:32},
+				    	{id:'email',name:'邮件服务器',image:'../images/Email_128x128.png',width:32,height:32},
+				    	{id:'firewall-attacked',name:'防火墙-受攻击',image:'../images/Firewall_128x128.png',width:32,height:32},
+				    	{id:'camera',name:'摄像头',image:'../images/Ip_Camera_128x128.png',width:32,height:32},
+				    	{id:'modem',name:'调制解调器',image:'../images/Modem_128x128.png',width:32,height:32},
+				    	
+				    	{id:'power_distribution_unit',name:'电源分配单元',image:'../images/power_distribution_unit_128x128.png',width:32,height:32},
+				    	{id:'printServer',name:'打印机服务器',image:'../images/Print_Server_128x128.png',width:32,height:32},
+				    	{id:'printServerWireless',name:'无线打印机',image:'../images/Print_Server_Wireless_128x128.png',width:32,height:32},
+				    	{id:'repeater',name:'重发器',image:'../images/Repeater_128x128.png',width:32,height:32},
+				    	{id:'ups',name:'UPS电源',image:'../images/UPS_128x128.png',width:32,height:32},
+				    	
+				    	{id:'wireless_Router',name:'无线路由器',image:'../images/Wireless_Router_128x128.png',width:32,height:32},
+				    	{id:'switch',name:'交换机',image:'../images/Switch_128x128.png',width:32,height:32}
+				    ]
+			    },
+			    popmenu:{
+			     	container:'mm',
+			     	data:[
+				    	{id:'menu_1',name:'删除连接线',onclick:function(evt,instance){topology.deleteCurrentObject();},filter:'line',iconCls:'icon-remove'},
+				    	{id:'menu_2',name:'删除设备',onclick:function(evt,instance){topology.deleteCurrentObject();},filter:'device',iconCls:'icon-remove'},
+				    	{id:'menu_3',name:'保存',onclick:function(evt,instance){saveJson();},filter:'all',iconCls:'icon-save'},
+				    	{id:'menu_4',name:'加载',onclick:function(evt,instance){loadJson();},filter:'all',iconCls:''}
+				    ]
+			    }
+          });
+          loadJson();
+    	});
+    	
+    	
+	</script>
+</head>
+<body class="easyui-layout">
+	<!-- 菜单  -->
+	<div region="north" border="false" style="height:auto;background:#B3DFDA;padding:5px">
+		<div style="width:auto;">
+			<a href="javascript:void(0)" id="mb1" class="easyui-menubutton" menu="#mm1" >文件</a>
+			<a href="javascript:void(0)" id="mb2" class="easyui-menubutton" menu="#mm2" >视图</a>
+			<a href="javascript:void(0)" id="mb2" class="easyui-menubutton" menu="#mm3" iconCls="icon-help">帮助</a>
+		</div>
+		<div id="mm1" style="width:150px;">
+			<div  onclick="loadJson();">加载..</div>
+			<div iconCls="icon-save" onclick="saveJson();">保存</div>
+			<!--  
+			<div class="menu-sep"></div>
+			<div>剪切</div>
+			<div>拷贝</div>
+			<div>粘贴</div>
+			<div class="menu-sep"></div>-->
+			<div iconCls="icon-remove">删除</div>
+			
+		</div>
+		<div id="mm2" style="width:100px;">
+			<div iconCls="icon-reload" onclick="resize();">调整尺寸</div>
+		</div>
+		<div id="mm3" style="width:100px;">
+			<div>帮助文档</div>
+			<div>关于</div>
+		</div>
+	</div>
+	<!-- 绘图区  -->
+	<div id="mainArea" region="center" title="">
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="vertical-align: top;">
+						<div id="toolbar" style="width:200px;height:auto;">  
+						</div> 
+						<div id="mm" style="width:120px;">  
+						</div>
+					</td>
+					<td>
+						<div id="container" style="border white 1px;"></div>
+					</td>
+				</tr>
+			</table>
+	</div>
+	
+</body>
+</html>
